@@ -7,11 +7,9 @@ WORKDIR /app
 
 COPY . .
 
-RUN yarn install --frozen-lockfile
-RUN yarn install --frozen-lockfile
-
-RUN yarn run build
+RUN yarn 
 
 EXPOSE 8080
 
 CMD ["yarn", "run", "dev", "--host"]
+

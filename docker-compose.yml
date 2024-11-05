@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  # Snapshot
+  snapshot:
+    build: .
+    container_name: snapshot
+    env_file:
+      - .env
+  
+    environment:
+      VITE_HUB_URL: https://testnet.hub.snapshot.org
+      VITE_RELAYER_URL: https://testnet.hub.snapshot.org
+      VITE_DEFAULT_NETWORK: 11155111
+      VITE_IPFS_GATEWAY: snapshot.4everland.link
+      
+    ports:
+      - '8080:8080'
+
+networks:
+  default:
+    external: true
+    name: snapshot-network
