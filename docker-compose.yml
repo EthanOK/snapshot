@@ -8,10 +8,10 @@ services:
       - .env
   
     environment:
-      VITE_HUB_URL: https://testnet.hub.snapshot.org
-      VITE_RELAYER_URL: https://testnet.hub.snapshot.org
+      VITE_HUB_URL: http://localhost:3000
       VITE_DEFAULT_NETWORK: 11155111
       VITE_IPFS_GATEWAY: snapshot.4everland.link
+      VITE_GUARD_URL: http://localhost:8090
       
     ports:
       - '8080:8080'

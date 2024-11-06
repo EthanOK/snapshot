@@ -5,7 +5,16 @@ import {
   BoostSubgraph
 } from '@/helpers/boost/types';
 
-const GUARD_URL = 'https://boost.snapshot.org';
+// TODO:
+const GUARD_URL =
+  import.meta.env.VITE_GUARD_URL || 'https://boost.snapshot.org';
+
+export async function getGuardAddress(): Promise<string> {
+  const results = await fetch(`${GUARD_URL}`);
+  if (results.status !== 200) throw new Error('Error fetching rewards');
+  let data = await results.json();
+  return data.guard_address;
+}
 
 export async function getRewards(
   proposal_id: string,

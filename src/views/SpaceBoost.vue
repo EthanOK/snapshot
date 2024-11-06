@@ -18,6 +18,7 @@ import { sendApprovalTransaction } from '@/helpers/transaction';
 import { pinGraph } from '@/helpers/pin';
 import { BoostStrategy } from '@/helpers/boost/types';
 import { isExcludedToken } from '@/helpers/boost/tokens';
+import { getGuardAddress } from '@/helpers/boost/api';
 
 const DISTRIBUTION_TYPE_ITEMS = [
   {
@@ -233,6 +234,7 @@ const strategy = computed<BoostStrategy>(() => {
     name: 'Boost',
     description: 'Snapshot.org proposal boost',
     image: 'https://snapshot.org/boost.png',
+    // TODO:
     external_url: `https://snapshot.org/#/${props.space.id}/proposal/${proposal.value.id}`,
     strategyName: 'proposal',
     params: {
@@ -453,7 +455,7 @@ async function handleCreate() {
         strategyURI: `ipfs://${ipfsHash}`,
         token: formToken.value!.contractAddress,
         amount: amountWithTokenFeeParsed.value,
-        guard: SNAPSHOT_GUARD_ADDRESS,
+        guard: await getGuardAddress(),
         start: proposal.value.end,
         end: proposal.value.end + TWO_WEEKS,
         owner: web3Account.value
