@@ -4,6 +4,7 @@ import { PROPOSAL_QUERY, VOTES_QUERY } from '@/helpers/queries';
 import { ExtendedSpace, Proposal, Vote } from '@/helpers/interfaces';
 import { isAddress } from '@ethersproject/address';
 import cloneDeep from 'lodash/cloneDeep';
+import { getOspAAccountByWeb3auth, getOspBindEOAByWeb3auth } from '@/osp';
 
 export async function getProposalVotes(
   proposalId: string,
@@ -74,8 +75,9 @@ export async function getPower(space, address, proposal) {
   const options: any = {};
   if (import.meta.env.VITE_SCORES_URL)
     options.url = import.meta.env.VITE_SCORES_URL;
+  const bindEOA = await getOspBindEOAByWeb3auth(address, proposal.network);
   return getVp(
-    address,
+    bindEOA || address,
     proposal.network,
     proposal.strategies,
     parseInt(proposal.snapshot),
@@ -99,10 +101,10 @@ export async function voteValidation(
   if (proposal.validation.name === 'basic') {
     params.strategies = params.strategies ?? proposal.strategies;
   }
-
+  const aa = await getOspAAccountByWeb3auth(address, proposal.network);
   const validateRes = await validate(
     proposal.validation.name,
-    address,
+    aa || address,
     space.id,
     proposal.network,
     parseInt(proposal.snapshot),
@@ -132,10 +134,10 @@ export async function proposalValidation(
     params.strategies =
       space.validation?.params?.strategies || space.strategies;
   }
-
+  const aa = await getOspAAccountByWeb3auth(address, space.network);
   const validateRes = await validate(
     space.validation.name,
-    address,
+    aa || address,
     space.id,
     space.network,
     'latest',
